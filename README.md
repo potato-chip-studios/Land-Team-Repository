@@ -8,6 +8,9 @@ By adding files to this repository, you agree that other contributers to this re
 
 All works when created, at least within UK law, are automatically protected by copyright protection under the Copyright, Designs and Patents Act 1988. For more information, please visit https://www.gov.uk/copyright
 
+All contributers should be aware of Coventry University's intellectual property policy. If you need to refresh your knowledge of this, it can be found here, under "Appendix 12: Intellectual Property Rights Policy: Students":
+https://www.coventry.ac.uk/the-university/key-information/registry/general-regulations/
+
 To keep this repository simple and friendly, please do the following:
 
 . Put your name in files you upload.
