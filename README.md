@@ -19,6 +19,23 @@ To keep this repository simple and friendly, please do the following:
 
 . Reference any work that isn't your own.
 
+# RULES
+
+. Only upload on the tasks allocated to that person unless otherwise stated I.e permission requested 
+
+. Don't update others code or other people's tasks without permission I.e requesting assistance. State person who assisted if there is assistance with the code.
+
+. Document why and how the code works so others can understand 
+
+. Ensure code remains in the scope of the project, I.e completes the task set out to do.
+
+. Not swearing in official documentation inc github.
+
+. Use proper syntax with useful comments when updating I.e:
+
+   UPDATE <FILENAME> 
+   comments: changed a function name to use camel case for consistency
+
 Now the bit that protects authors;
 
 No guarantee or warranty is offered by the author(s) of any files. No liability is accepted by any author(s). All rights go to respective authors.
