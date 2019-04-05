@@ -1,0 +1,153 @@
+he standard function to capture images in RGB format
+import time  
+import picamera  
+import picamera.array  
+import numpy as np  
+  
+with picamera.PiCamera() as camera:  
+    camera.resolution = (100, 100)  
+    time.sleep(2)  
+    image = np.empty((128, 112, 3), dtype=np.uint8)  
+    camera.capture(image, 'rgb')  
+    image = image[:100, :100]  
+
+Capture images and return a frame which can be processed later 
+import cv2  
+import time  
+import cfg  
+from picamera.array import PiRGBArray    #3D numpy array,( rows, columns, colors) from an unencoded RGB capture  
+from picamera import PiCamera  
+  
+''''' 
+    ImageRetrival is for getting the images through CAMERA 
+    Input: PiCamera 
+    Return: Frame 
+'''  
+class ImageRetrival(object):  
+  
+    def __init__(self, camera, Capture):  
+        self.camera = camera  
+        self.Capture = Capture  
+        self.frame = None  
+        self.running = True  
+        camera.start_recording('foo.h264')  #h.264 is video compression to create a  high-quality video with lower bit rates  
+      
+    def run(self):  
+        if self.running == True:  
+            self.Capture = PiRGBArray(self.camera, size=cfg.CAMERA_RESOLUTION)  
+            self.camera.capture(self.Capture, format="bgr", use_video_port=True)  
+            self.frame=self.Capture.array  
+            return self.frame  
+
+
+
+
+
+
+Capture image and check for RED color
+import cv2  
+import time  
+import numpy as np  
+import sys  
+import picamera  
+import time  
+from picamera.array import*   
+  
+  
+def detect_red(camera):  
+    # saving the picture to an in-program stream rather than a file  
+    stream = io.BytesIO()  
+  
+    #scale_down = 6  
+    red = False  
+  
+    # capture into stream  
+    camera.capture(stream, format='jpeg', use_video_port=True)  
+    # convert image into numpy array  
+    data = np.fromstring(stream.getvalue(), dtype=np.uint8)  
+    # turn the array into a cv2 image  
+    img = cv2.imdecode(data, 1)  
+  
+    # Resizing the image, blur the image and convert it to HSV values for better recognition  
+    # img = cv2.resize(img, (len(img[0]) / scale_down, len(img) / scale_down))  
+    # img = cv2.GaussianBlur(img, (5,5), 0)  
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)  
+  
+    #Defining the red color range and calculating if these values lie in the range  
+    red_lower = np.array([0, 150, 0], np.uint8)  
+    red_upper = np.array([5, 255, 255], np.uint8)  
+    red_binary = cv2.inRange(img, red_lower, red_upper)  
+  
+    # Dilates the red space, making it larger  
+    dilation = np.ones((15, 15), "uint8")  
+    red_binary = cv2.dilate(red_binary, dilation)  
+  
+    contours, _ = cv2.findContours(red_binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)  
+  
+    if not contours == []:  
+        if not red:  
+            red = True  
+            print "Red surface detected!"  
+        else:  
+            print "No red surface  detected."  
+  
+    return red  
+  
+     
+  
+  
+with picamera.PiCamera() as camera:  
+    # to speed things up, lower the resolution of the camera  
+    camera.resolution = (320, 240)  
+    detect_red(camera)  
+Capture image and check for GREEN color
+import cv2  
+import time  
+import numpy as np  
+import sys  
+import picamera  
+import time  
+from picamera.array import*   
+  
+def detect_green(camera):  
+    # saving the picture to an in-program stream rather than a file  
+    stream = io.BytesIO()  
+  
+    #scale_down = 6  
+    green = False  
+  
+    # capture into stream  
+    camera.capture(stream, format='jpeg', use_video_port=True)  
+    # convert image into numpy array  
+    data = np.fromstring(stream.getvalue(), dtype=np.uint8)  
+    # turn the array into a cv2 image  
+    img = cv2.imdecode(data, 1)  
+  
+    # Resizing the image, blur the image and convert it to HSV values for better recognition  
+    img = cv2.resize(img, (len(img[0]) / scale_down, len(img) / scale_down))  
+    img = cv2.GaussianBlur(img, (5,5), 0)  
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)  
+  
+    #Defining the green color range and calculating if these values lie in the range  
+    green_lower = np.array([124,252,0], np.uint8)  
+    green_upper = np.array([107,142,35], np.uint8)  
+    green_binary = cv2.inRange(img, green_lower, green_upper)  
+  
+    # Dilates the green space, making it larger  
+    dilation = np.ones((15, 15), "uint8")  
+    red_binary = cv2.dilate(green_binary, dilation)  
+  
+    contoursGreen, _ = cv2.findContours(green_binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)  
+  
+    if not contoursGreen == []:  
+        if not green:  
+            green = True  
+            print "Green surface detected!"  
+        else:  
+            print "No green surface detected."  
+    return green  
+  
+with picamera.PiCamera() as camera:  
+    # to speed things up, lower the resolution of the camera  
+    camera.resolution = (320, 240)  
+    detect_green(camera)
